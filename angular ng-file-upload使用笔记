@@ -1,0 +1,74 @@
+简单记录一下使用angular 的上传控件的一些操作
+
+1\html
+  <input type="button" class="" 
+       ngf-select //默认true,使得在这个元素上可以选择文件
+       ngf-change="selectImg($file)" //当选择的文件发生变化是,触发方法,selectImg是js处自己写的方法
+       ng-model="image" //angular 的模型绑定,所选择的文件会赋值到image中
+    	 ngf-multiple="true"//默认为false,为true时表示可以选择多个文件
+    	 accept="image/png, image/jpeg" //限定文件的格式
+       ngf-max-size="2MB" //限定文件的上传大小
+       value="上传图片"  />
+  前端页面的代码如上.这里贴上一个较详细的简书博客(作者:木槿惜年2013)https://www.jianshu.com/p/6e14f9200450
+  
+  
+2\js(需要注意的是下边的代码是有所删减的.并不是完整代码)
+  /**批量上传文件*/
+	var submitImg = function(i) {
+        Upload.upload({
+            url: 'http://***.***.com/',//接受上传文件的接口地址,我这里使用的是将文件上传至七牛云的空间.
+            data:  {
+                file: $scope.image==""?$scope.image.localPath[i],
+                token:$scope.tokens[i]
+            }
+        }).then(function (response) {
+        	$scope.image.localCropedPath="";
+        	init();//图片上传成功之后更新一下页面
+        }, function (response) {
+        	if(response.status=='413'&&response.data.error=='exceed FsizeLimit'){
+	    		$scope.alerts.push({type: 'faild-used', msg: '文件太大，请上传2M以内的文件'});
+	    	}else{
+	    		$scope.alerts.push({type: 'faild-used', msg: response.status + ': 上传失败,请重试'});
+	    	} 
+        	$scope.onDelete($scope.image.localPath);
+        }, function (evt) {
+        	$scope.alerts.push({type: 'success-used', msg: "上传进度>>"+Math.min(100, parseInt(100.0 * 
+                    evt.loaded / evt.total))});
+        });
+	};
+  /**获取上传所需要的token*/
+	var getImgToken=function(){
+		data = {'id':[],'name':[],'file_size':[],
+				'file_type':0,'type':0,'tag':[],'userid':$user.seqId};
+		for(var i=0;i<$scope.image.localPath.length;i++){
+			data.name.push($scope.image.localPath[i].name);
+			data.file_size.push($scope.image.localPath[i].size);
+			data.tag.push($scope.image.localPath[i].type);
+			data.id.push($scope.image.localPath[i].id);
+		}
+		
+    /**在获取token这个方法中,七牛云要求用户填入一个回调地址,在回调地址中,七牛云会返回一个可以访问到你上次的资源的url给你*/
+		$http.post("ter/insertMaterialFile.do",data,{headers:{'Content-Type':'application/json;charset=UTF-8'}}).then(
+				function successCallback(res){
+				if(res.data.status==0){
+					angular.copy(res.data.tokens,$scope.tokens);//angular js 的深拷贝方法
+					for(var i=0;i<$scope.image.localPath.length;i++){//因为七牛云目前还不支持批量上传,所以目前所谓的批量上传就是多次请求.
+						$scope.image.localPath[i].id=res.data.data[i].id;
+						submitImg(i); 
+					}
+				}else{
+					$scope.alerts.push({type: 'faild-used', msg: res.data.description});
+				}
+				},
+				function errorCallback(res){
+				console.log(res);
+				}
+		);
+	};
+	
+	$scope.selectImg=function(f){
+		if(f!=null){
+			getImgToken();	
+		}
+		return;
+	};
