@@ -1,0 +1,53 @@
+正确/错误提示的几种实现方法
+接受公司内部使用的平台，涉及到服务器返回的结果的时候，将不同的状态(code=0,status=success和code=1,status=faild等等)呈现给前端页面上，
+因为几乎每个控制域都会用到，所以记录一下方便忘记的时候再去找.
+目前使用的几种方式:
+1、
+(1)js：
+//定义错误属性
+$scope.error = {
+		success: false,
+		msg: '',
+		show: false,
+		times: 3000
+	};
+	//定义显示错误方法
+	var showError=function(msg){
+    	$scope.error.msg = msg;
+    	$scope.error.show=true;
+    	$timeout(function(){$scope.error.show=false;},$scope.error.timeout);//一段时间后将显示状态变为false
+	};
+  
+  //在异步请求的回调函数中如
+  function successCallback(res){
+    showError(res.data.description);
+  }
+  或
+  function errorCallback(res){
+    showError(res.data.description);
+  }
+  中调用显示方法;
+(2)java处定义好返回的通用类，写好返回的错误码和错误描述等信息
+(3)html:
+<div class="col-md-11 col-md-offset-1">
+  <span ng-class="{true: 'msg-success',false: 'msg-danger'}[error.success]" ng-show="error.show">{{error.msg}}</span>
+</div>
+
+
+2、第二种方法
+(1)js:
+//定义通知属性
+$scope.alerts = [];
+
+//定义关闭显示函数式
+$scope.closeAlert = function(index) {
+  $scope.alerts.splice(index, 1);
+};
+
+//在需要提示的地方给通知属性添加一个map
+$scope.alerts.push({type: 'faild-used', msg:"超出页码范围"});
+
+(2)java处定义好返回的通用类，写好返回的错误码和错误描述等信息
+
+(3)html:       //通知内容                   //通知类型，控制样式    //3秒后执行close的方法      //设定小时时间
+<div uib-alert ng-repeat="alert in alerts" ng-class="alert.type" close="closeAlert($index)" dismiss-on-timeout="3000">{{alert.msg}}</div> 
