@@ -1,0 +1,14 @@
+在使用angular的时候，一定少不了路由和跳转的问题，无论是原生的js，还是angular，有很多方式可以进行页面跳转
+
+1、window.location.href="url",通过连接跳转的方式，相当于在浏览器地址栏输出连接是一个效果
+
+2、在前端页面用a标签的href属性，href="url"
+
+3、angularjs 属性: ui-sref="name",这里的name=路由配置中的name属性的值
+
+4、angularjs 属性: ng-href="url",angular的这个标签ng-href 指令覆盖了原生的 <a> 元素 href 属性。如果在 href 的值中有 AngularJS 代码，
+则需要使用 ng-href 而不是 href。ng-href 指令确保了链接是正常的，即使在 AngularJS 执行代码前点击链接。
+
+5、angularjs 方法:$state.go("name");这里的name和ui-sref的name是一样的，需要传入路由配置中的name属性的值
+
+目前用到的有这几种方法，后续遇到继续添加。
