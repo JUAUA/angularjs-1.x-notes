@@ -4,17 +4,21 @@
 
 打开模态框
 $uibModal.open({
-    animation: true,//动画特效
-    backdrop: 'static',//static时,点击模态框以外的空白处，模态框不消失;true时则相反.
-    templateUrl:'robot/robotConfig.do',//视图魔板,自定义模态框中的视图
-    controller: 'robotConfigCtrl',//指定视图对应的控制域
-    size: 'lg',//模态框大小,bootstrap默认的有lg,max等
-    resolve: {//值传递 s=当前控制域的值,在上面的controller控制域里,在注入服务的地方也可以注入这里传入的值
-    s: function () {
-        return s;
-      }
-    }
-});
+                animation: true,//动画特效
+                backdrop: 'static',//static时,点击模态框以外的空白处，模态框不消失;true时则相反.
+                templateUrl:'robot/robotConfig.do',//视图魔板,自定义模态框中的视图
+                controller: 'robotConfigCtrl',//指定视图对应的控制域
+                size: 'lg',//模态框大小,bootstrap默认的有lg,max等
+                resolve: {//值传递 s=当前控制域的值,在上面的controller控制域里,在注入服务的地方也可以注入这里传入的值
+                s: function () {
+                    return s;
+                  }
+                }
+            })
+            .close=function(rs){//当模态框关闭的时候会执行该方法，并可以从子页面中传递参数rs回到父页面
+                if(rs&&rs.status==0)
+                this.dismiss();
+            };
 
 关闭模态框
   除了打开模态框的时候可以设置关闭模态框的方式之外,还可以调用方法来关闭
