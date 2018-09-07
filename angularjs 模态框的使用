@@ -8,7 +8,7 @@ $uibModal.open({
                 backdrop: 'static',//static时,点击模态框以外的空白处，模态框不消失;true时则相反.
                 templateUrl:'robot/robotConfig.do',//视图魔板,自定义模态框中的视图
                 controller: 'robotConfigCtrl',//指定视图对应的控制域
-                size: 'lg',//模态框大小,bootstrap默认的有lg,max等
+                size: 'lg',//模态框大小，可以在css处自定义其样式，只需要在CSS这样定义.modal-lg{***}即可，***处写自定义样式，前面使用modal开头,使用时如当前，size的值填写lg
                 resolve: {//值传递 s=当前控制域的值,在上面的controller控制域里,在注入服务的地方也可以注入这里传入的值
                 s: function () {
                     return s;
@@ -16,7 +16,6 @@ $uibModal.open({
                 }
             })
             .close=function(rs){//当模态框关闭的时候会执行该方法，并可以从子页面中传递参数rs回到父页面
-                if(rs&&rs.status==0)
                 this.dismiss();
             };
 
