@@ -1,0 +1,12 @@
+bootstrap 3.34
+
+html:
+项目中常用的三个功能
+<span class="glyphicon glyphicon-edit" ng-click="" tooltip-placement="top" tooltip-trigger="mouseenter"  uib-tooltip="编辑"></span>
+
+1、tooltip-placement = "" 确定悬浮出现的位置,可以填写 上下左右 top,bottom,left,rigth
+
+2、tooltip-trigger = "" 触发事件 定义如何触发提示工具： click(点击)| hover(悬浮) | focus(检点) | mouseenter(鼠标进入)。
+您可以传递多个触发器，每个触发器之间用空格分隔。
+
+3、uib-tooltip = "" 提示的内容
