@@ -1,0 +1,16 @@
+
+angular使用监听键盘的方法实现回车搜索等功能
+
+1\html
+ng-keyup="keyup($event)" 在搜索框中使用ng-keyup属性即可监听键盘操作，并将时间$event传入js
+
+2\js
+/**
+* e即页面传入的$event时间
+* /
+$scope.keyup=function(e){
+   var keycode = window.event?e.keyCode:e.which;
+   if(keycode==13){//enter  键盘上的回车按键对应的code为13
+     $scope.getVideoNarrates($scope.searchWord);
+   }
+};
