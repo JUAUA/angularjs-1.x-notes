@@ -1,0 +1,28 @@
+
+angular发起post请求时的几种方式。
+
+1、基本类型的参数
+
+js部分的代码如下
+$http.post("***/***.do",$httpParamSerializerJQLike({"userid":id,'text':text})).then();
+
+$http.post("***/***.do?userid="+id+'&text='+text).then();
+
+java部分的接受post请求的代码
+@RequestMapping(path="/***.do",produces="application/json;charset=UTF-8")
+public ResultEntity getPicNarrates(@RequestParam("userid")int userid,
+    @RequestParam("text")String text){
+    
+}
+
+2、json格式(map\list形式)
+如 var data = {'userid':id,'text':text,'questions':[]};
+js部分的代码如下
+$http.post("material/editAutoQA.do?userid="+id,data,{headers:{'Content-Type':'application/json;charset=UTF-8'}}).then();
+
+java部分的接受post请求的代码
+@RequestMapping(path="/***.do",produces="application/json;charset=UTF-8")
+public ResultEntity addOrEditPNarrate(@RequestParam("userid")int userid,
+    @RequestBody ObjectNode node){
+    
+}
