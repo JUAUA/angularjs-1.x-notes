@@ -1,0 +1,19 @@
+1、js 代码
+/**
+* @param $scope
+* @param $uibModal 
+* @param function() 第三个参数是确认模态框点击确定时触发的方法
+* @param function() 第四个参数是点击取消时触发的方法
+* @param str 第五个参数是确认模态框中正文的内容
+* @param str 第六个参数是确认模态框的标题
+* 
+*/
+$confirmDialog.open($scope,$uibModal,
+		function(){
+			console.log("confirm");
+		},
+		function(){
+			console.log("cancel");
+		},
+		"删除素材会将终端下选则的营销素材一同被删除？您确定要删除吗？","温馨提示");
+
