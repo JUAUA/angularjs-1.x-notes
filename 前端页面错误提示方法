@@ -46,7 +46,7 @@ $scope.closeAlert = function(index) {
 
 //在需要提示的地方给通知属性添加一个map
 $scope.alerts.push({type: 'faild-used', msg:"超出页码范围"});
-$scope.alerts.push({type: 'sucess-used', msg:"成功"});
+$scope.alerts.push({type: 'success-used', msg:"成功"});
 
 (2)java处定义好返回的通用类，写好返回的错误码和错误描述等信息
 
