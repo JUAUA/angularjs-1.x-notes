@@ -6,6 +6,9 @@
 * @param function() 第四个参数是点击取消时触发的方法
 * @param str 第五个参数是确认模态框中正文的内容
 * @param str 第六个参数是确认模态框的标题
+* @param str 第七个参数是确认模态框的确认按钮文本
+* @param str 第八个参数是确认模态框的取消按钮文本
+* @param str 第九个参数是确认模态框的大小
 * 
 */
 $confirmDialog.open($scope,$uibModal,
@@ -15,5 +18,77 @@ $confirmDialog.open($scope,$uibModal,
 		function(){
 			console.log("cancel");
 		},
-		"删除素材会将终端下选则的营销素材一同被删除？您确定要删除吗？","温馨提示");
+		"删除素材会将终端下选则的营销素材一同被删除？您确定要删除吗？","温馨提示","确定","取消",100);
 
+
+
+
+自定义提示框
+lingjuPlatform.factory("$confirmDialog",function(){
+	return {
+		modalInstance:{},
+		open:function($scope,$uibModal,trueCallback,falseCallback,content,title,confirmText,cancelText,size){
+			this.modalInstance = $uibModal.open({
+			  animation: true,
+			  backdrop: 'static',
+			  windowClass: 'change-otz',
+			  size: 'md',
+			  template: '<div class="confirm-box">'+
+						'<div class="confirm-box-header">'+
+						'	<span>{{title}}</span>'+
+						'</div>'+
+						'<div class="confirm-box-content">'+
+						'	<span>{{content}}</span>'+
+						'</div>'+
+						'<div class="confirm-box-footer">'+
+						'	<button class="button-gray button-radius" type="button" ng-click="cancel()">{{cancelText?cancelText:"取消"}}</button>'+
+						'	<button class="button-default button-radius" type="button" ng-click="ok()">{{confirmText?confirmText:"确定"}}</button>'+
+						'</div>',
+			  controller: 'confirmCtrl',
+			  size: size,
+			  resolve: {
+				title: function () {
+				  return title;
+				},
+				content:function(){
+					return content;
+				},
+				confirmText:function(){
+					return confirmText;
+				},
+				cancelText:function(){
+					return cancelText;
+				},
+				trueCallback:function(){
+					return trueCallback;
+				},
+				falseCallback:function(){
+					return falseCallback;
+				}
+			  }
+			});
+		},
+		close:function(){
+			this.modalInstance.close();
+		}
+	};
+});
+
+
+自定义提示框的控制域
+lingjuPlatform.controller('confirmCtrl',function($scope,$uibModalInstance, title,content,confirmText,cancelText,trueCallback,falseCallback){
+	$scope.title=title?title:"温馨提示";
+	$scope.content=content;
+	$scope.confirmText=confirmText;
+	$scope.cancelText=cancelText;
+	$scope.ok=function(){
+		 $uibModalInstance.close();
+		if(angular.isFunction(trueCallback))
+		trueCallback();
+	};
+	$scope.cancel=function(){
+		 $uibModalInstance.close();
+		if(angular.isFunction(falseCallback))
+		falseCallback();
+	};
+});
