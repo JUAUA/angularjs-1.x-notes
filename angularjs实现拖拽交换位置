@@ -1,0 +1,58 @@
+来源https://blog.csdn.net/zcl_love_wx/article/details/51691631
+
+只是做个记录方便自己使用
+
+快速使用步骤
+
+1、下载js插件包
+https://github.com/fatlinesofcode/ngDraggable
+
+2、在项目中导入js并在页面中引入
+<script src="js/common/plug/ngDraggable.js"></script>
+
+3、在angular模块中添加
+var test = angular.module('test', ['ngDraggable']);
+这里是比较容易被忽略的步骤，看到有些人使用了之后说拖不动，很可能是因为这个地方没有添加。
+
+4、html页面中的使用
+
+<div class="">
+  <div ng-drop="true" ng-drop-success="dropComplete($index,$data,$event)" ng-repeat="file in files">
+    <div class="" ng-drag="true" ng-drag-data="file">
+      <label class="">{{tf.name}}</label>
+    </div>
+  </div>
+</div>
+
+这里需要注意几个地方
+第一个：ng-drop="true"                                        表示该元素内可放置被拖动的元素 
+第二个：ng-drop-success="dropComplete($index,$data,$event)"   表示拖动元素松开的时候触发的事件，一般填写自己的js方法
+第三个：ng-repeat="file in files"                             表示集合遍历的各个元素
+第四个：ng-drag="true"                                        表示该元素能够被拖动 
+第五个：ng-drag-data="file"                                   表示拖动元素时跟着被拖走的数据，这里的值填入ng-repeat中的file元素
+
+5、js代码
+两种方法均可以实现交换位置
+  /** 拖拽成功触发方法
+	*   index 拖拽后落下时的元素的序号（下标）
+	*   obj 被拖动数据对象
+	*/
+	$scope.dropComplete = function(index, obj,event){
+        var idx = $scope.backGroundInfo.tFiles.indexOf(obj); 
+        $scope.backGroundInfo.tFiles[idx] = $scope.backGroundInfo.tFiles[index];
+        $scope.backGroundInfo.tFiles[index] = obj;           
+	};
+	
+	/** 拖拽成功触发方法
+	*   index 拖拽后落下时的元素的序号（下标）
+	*   obj被拖动数据对象
+	*/
+	$scope.dropComplete = function(index, obj,event){
+	        //重新排序
+	        var idx = $scope.backGroundInfo.tFiles.indexOf(obj);             
+	        $scope.backGroundInfo.tFiles.splice(idx,1);
+	        $scope.backGroundInfo.tFiles.splice(index,0,obj);   
+	};
+  
+  
+  到此就可以实现效果了。
