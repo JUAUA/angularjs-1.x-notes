@@ -1,0 +1,50 @@
+来源：https://blog.csdn.net/u014291497/article/details/52801032
+
+记录一下方便自己查看
+
+使用angular-ui-sortable实现拖动排序，实现拖拽动态排序功能
+
+使用步骤
+
+第一步：下载并添加3个重要的js，
+包分别是
+JQuery v3.1+ 
+JQueryUI v1.12+
+AngularJS v1.2+
+sortable.js
+并且添加到项目中的时候按照这个顺序添加(注意，顺序和版本号都挺重要)
+
+第二步：html页面
+<div class = "">
+  <ul ui-sortable ng-model="data">
+      <li ng-repeat="item in data ">
+          <span>{{item.name}}, {{item.age}}</span>
+      </li>
+  </ul>
+</div>
+
+其中需要注意的地方
+1、ui-sortable               这个标签里面只能包含一个ng-repeat
+2、ng-model="data"           绑定集合元素
+3、ng-repeat="item in data"  遍历集合
+
+第三步:js代码
+ $scope.data = [{
+         "name": "allen",
+         "age": 21,
+         "i": 0
+     }, {
+         "name": "bob",
+         "age": 18,
+         "i": 1
+     }, {
+         "name": "curry",
+         "age": 25,
+         "i": 2
+     }, {
+         "name": "david",
+         "age": 30,
+         "i": 3
+     }];
+     
+上面三步即可实现一个最简单的demo.
