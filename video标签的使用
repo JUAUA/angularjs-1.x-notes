@@ -1,0 +1,25 @@
+
+记录一下使用video方法与需要注意的地方
+
+1、html
+<video class="" muted controls autoplay="autoplay">
+  <source src="{{vedio_url}}" type='video/mp4'>
+</video>
+
+其中需要注意的几个属性
+1、muted     autoplay属性无效的时候，使用该属性可以让其生效
+2、controls 让video控件的按钮可以点击
+3、autoplay 当有视频的时候自动播放视频
+4、src       src存在安全问题。由于angular默认不会把一个视频地址认定为一个安全的文件地址，
+除非在控制器使用$sce事先声明这个地址是可信的,当然使用前需要把这个模块注入到控制器中 
+vedio_url = $sce.trustAsResourceUrl(str)
+其中 $sce模块需要注入
+
+
+2、拓展
+有一个需求：获得的视频url获取它的第作为封面
+使用canvas画布可以获取播放时的图片，但是存在的问题是由于video标签需要从dom中创建，也就是说
+在页面上如果没有video元素，则无法获取。
+所以获取第一帧作为封面还是需要从服务端实现.之后再添加服务端实现的方法
+
+
