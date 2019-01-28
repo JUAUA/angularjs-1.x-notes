@@ -37,15 +37,15 @@
         });
 	};
   /**获取上传所需要的token*/
-	var getImgToken=function(){
-		data = {'id':[],'name':[],'file_size':[],
-				'file_type':0,'type':0,'tag':[],'userid':$user.seqId};
-		for(var i=0;i<$scope.image.localPath.length;i++){
-			data.name.push($scope.image.localPath[i].name);
-			data.file_size.push($scope.image.localPath[i].size);
-			data.tag.push($scope.image.localPath[i].type);
-			data.id.push($scope.image.localPath[i].id);
-		}
+var getImgToken=function(){
+	data = {'id':[],'name':[],'file_size':[],
+			'file_type':0,'type':0,'tag':[],'userid':$user.seqId};
+	for(var i=0;i<$scope.image.localPath.length;i++){
+		data.name.push($scope.image.localPath[i].name);
+		data.file_size.push($scope.image.localPath[i].size);
+		data.tag.push($scope.image.localPath[i].type);
+		data.id.push($scope.image.localPath[i].id);
+}
 		
     /**在获取token这个方法中,七牛云要求用户填入一个回调地址,在回调地址中,七牛云会返回一个可以访问到你上次的资源的url给你*/
 		$http.post("ter/insertMaterialFile.do",data,{headers:{'Content-Type':'application/json;charset=UTF-8'}}).then(
@@ -72,3 +72,19 @@
 		}
 		return;
 	};
+
+使用七牛云上传图片文件
+Upload.upload({
+    url: 'http://up-z1.qiniu.com/',
+    data:  {
+	file: Upload.dataUrltoBlob($scope.account.image.localCropedPath, $scope.account.image.localPath.name),
+	token:$scope.token
+    }
+}).then(function (response) {
+	showError('上传成功');
+}, function (response) {
+	showError( response.status + ': ' + response.data.error);
+}, function (evt) {
+    console.log("progress>>"+Math.min(100, parseInt(100.0 * 
+			    evt.loaded / evt.total)));
+});
