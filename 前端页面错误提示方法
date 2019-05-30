@@ -53,10 +53,11 @@ $scope.alerts.push({type: 'success-used', msg:"成功"});
 (3)html:       //通知内容                   //通知类型，控制样式    //3秒后执行close的方法      //设定小时时间
 <div uib-alert ng-repeat="alert in alerts" ng-class="alert.type" close="closeAlert($index)" dismiss-on-timeout="3000">{{alert.msg}}</div> 
 
-(4)js依赖：
+(4)js依赖与需要导入的模块：
 	1、ui-bootstrap-tpls-2.5.0.js
 	2、jquery-ui-1.12.js
 	3、jquery-3.2.1.js
+	angular.module('***', ['ui.bootstrap']);
 (5)css样式
 .alert {
     position: fixed;
