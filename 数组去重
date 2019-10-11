@@ -1,0 +1,14 @@
+var distinctArray = function(arr){
+		var arr2 = arr.filter(function(element,index,self){
+			for(var i in self){
+				if(i <= index)
+					continue;
+				else{
+					if(element.wordGroupId == self[i].wordGroupId)  /**自定义去重条件条件*/
+						return false;
+				}
+			}
+			return true;
+		});
+		return arr2;
+}
