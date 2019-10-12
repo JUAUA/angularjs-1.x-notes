@@ -1,0 +1,6 @@
+var reader = new FileReader();//读取操作就是由它完成的。
+reader.readAsText(file);//读取文件的内容
+
+reader.onload = function(){
+  console.log(this.result);//当读取完成之后会回调这个函数，然后此时文件的内容存储到了result中。直接操作即可。
+}
